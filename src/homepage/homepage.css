@@ -13,3 +13,27 @@
   justify-content: center;
 }
 
+.flex-column-center {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.active{
+  max-height: 200px;
+}
+
+.collapsed{
+  max-height: 0px;
+  transition: max-height 2s;  
+}
+
+.show {
+  opacity: 1;
+  transition: opacity 2s;
+}
+
+.hidden {
+  opacity: 0;
+}
+
