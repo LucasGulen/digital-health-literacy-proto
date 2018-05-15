@@ -17,10 +17,11 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 
 import './homepage.css';
 
-const entries = [];
+const allEntries = [];
 
 /*
 pathologie
@@ -36,6 +37,25 @@ class HomePage extends Component {
 
   constructor(props) {
     super(props);
+
+    // get all the data
+
+    axios.get("http://groups.cowaboo.net/2018/group08/public/api/observatory?observatoryId=catalogue")
+      .then((response) => {
+        const entries = response.data.dictionary.entries;
+        let i = 0;
+        for (let key in entries) {
+          const entry = entries[key];
+          try {
+            allEntries.push(JSON.parse(entry.value));
+          }
+          catch (error) {
+            console.log(entry.value);
+            i++;
+          }
+        }
+        console.log("number of errors "  + i);
+      })
     // binds
     this.handleChangeRequest = this.handleChangeRequest.bind(this);
     this.handleMakeRequest = this.handleMakeRequest.bind(this);
@@ -45,11 +65,6 @@ class HomePage extends Component {
       request: '',
       madeFirstRequest: true,
     };
-    entries.push(new Entry(1, "Pathologie", "Themes", "Type Source", "Lien Source", "Acces", "Societe", "Date", "Langue", "Population"));
-    entries.push(new Entry(2, "Pathologie", "Themes", "Type Source", "Lien Source", "Acces", "Societe", "Date", "Langue", "Population"));
-    entries.push(new Entry(3, "Pathologie", "Themes", "Type Source", "Lien Source", "Acces", "Societe", "Date", "Langue", "Population"));
-    entries.push(new Entry(4, "Pathologie", "Themes", "Type Source", "Lien Source", "Acces", "Societe", "Date", "Langue", "Population"));
-    entries.push(new Entry(5, "Pathologie", "Themes", "Type Source", "Lien Source", "Acces", "Societe", "Date", "Langue", "Population"));
   }
 
   // events
@@ -114,7 +129,7 @@ class HomePage extends Component {
           <Grid container>
             <Grid item lg={2} xs={false} />
             <Grid item lg={8} xs={12}>
-              <CardsList entries={entries} />
+              <CardsList entries={allEntries} />
             </Grid>
           </Grid>
         </div>

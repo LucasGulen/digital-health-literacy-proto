@@ -33,9 +33,9 @@ class CardEntry extends Component {
                                 Thème(s): {this.props.entry.themes}
                             </Typography>
                             <Typography component="p">
-                                {this.props.typeSource}
-                                    <a href={this.props.entry.lienSource}>
-                                    {this.props.lienSource}
+                                {this.props.typeReference}
+                                    <a href={this.props.entry.lienRessource}>
+                                    {this.props.lienRessource}
                                     </a>
                             </Typography>
                             <Typography component="p">
