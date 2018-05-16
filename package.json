@@ -4,10 +4,12 @@
   "private": true,
   "dependencies": {
     "@material-ui/icons": "^1.0.0-beta.43",
+    "decode-uri-component": "^0.2.0",
     "material-ui": "^1.0.0-beta.47",
     "material-ui-icons": "^1.0.0-beta.36",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-infinite-scroll-component": "^4.0.3",
     "react-scripts": "1.1.4"
   },
   "scripts": {

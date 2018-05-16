@@ -40,21 +40,33 @@ class HomePage extends Component {
 
     // get all the data
 
-    axios.get("http://groups.cowaboo.net/2018/group08/public/api/observatory?observatoryId=catalogue")
+    axios.get("http://groups.cowaboo.net/2018/group08/public/api/observatory?observatoryId=DHL")
       .then((response) => {
         const entries = response.data.dictionary.entries;
-        let i = 0;
         for (let key in entries) {
           const entry = entries[key];
+          let parsedEntry;
           try {
-            allEntries.push(JSON.parse(entry.value));
+            parsedEntry = JSON.parse(entry.value);
+            allEntries.push(
+              new Entry(
+                parsedEntry.entryNo,
+                parsedEntry.pathologie,
+                parsedEntry.themes,
+                parsedEntry.typeReference,
+                parsedEntry.lienRessource,
+                parsedEntry.acces,
+                parsedEntry.societe,
+                parsedEntry.date.substring(0, parsedEntry.date.length - 2),
+                parsedEntry.langue,
+                parsedEntry.population
+              )
+            );
           }
           catch (error) {
-            console.log(entry.value);
-            i++;
           }
         }
-        console.log("number of errors "  + i);
+        this.list.current.newData(allEntries);
       })
     // binds
     this.handleChangeRequest = this.handleChangeRequest.bind(this);
@@ -65,6 +77,8 @@ class HomePage extends Component {
       request: '',
       madeFirstRequest: true,
     };
+
+    this.list = React.createRef();
   }
 
   // events
@@ -76,6 +90,22 @@ class HomePage extends Component {
 
   handleMakeRequest() {
     this.setState({ madeFirstRequest: false });
+    this.filterContent();
+  }
+
+  filterContent() {
+    const requestEntry = new Entry(
+      0,
+      this.state.request,
+      [this.state.request],
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    );
   }
 
   // render
@@ -129,7 +159,7 @@ class HomePage extends Component {
           <Grid container>
             <Grid item lg={2} xs={false} />
             <Grid item lg={8} xs={12}>
-              <CardsList entries={allEntries} />
+              <CardsList ref={this.list} />
             </Grid>
           </Grid>
         </div>

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import AppTopBar from './../appbar/appbar';
 import Grid from 'material-ui/Grid';
@@ -16,6 +15,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+const decodeUriComponent = require('decode-uri-component');
 
 class CardEntry extends Component {
     render() {
@@ -33,9 +33,9 @@ class CardEntry extends Component {
                                 Thème(s): {this.props.entry.themes}
                             </Typography>
                             <Typography component="p">
-                                {this.props.typeReference}
-                                    <a href={this.props.entry.lienRessource}>
-                                    {this.props.lienRessource}
+                                {this.props.typeSource}
+                                    <a href={decodeUriComponent(this.props.entry.lienSource)}>
+                                    {decodeUriComponent(this.props.entry.lienSource)}
                                     </a>
                             </Typography>
                             <Typography component="p">
