@@ -1,4 +1,7 @@
+// React
 import React, { Component } from 'react';
+
+// MaterialUI
 import Button from 'material-ui/Button';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -7,6 +10,7 @@ import Typography from 'material-ui/Typography';
 import TextField from 'material-ui/TextField';
 import Menu, { MenuItem } from 'material-ui/Menu';
 
+// Styles
 import './appbar.css';
 
 class AppTopBar extends Component {

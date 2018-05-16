@@ -1,7 +1,11 @@
+// React
 import React, { Component } from 'react';
-import HomePage from './homepage/homepage';
-import './App.css';
 
+// My Components
+import HomePage from './homepage/homepage';
+
+// Styles
+import './App.css';
 
 class App extends Component {
   render() {
