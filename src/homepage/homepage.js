@@ -9,6 +9,14 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
 import Search from '@material-ui/icons/Search';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
+import Button from '@material-ui/core/Button';
+import StellarSdk from 'stellar-sdk';
 
 // HTTP
 import axios from 'axios';
@@ -66,7 +74,10 @@ class HomePage extends Component {
     this.state = {
       request: '',
       madeFirstRequest: true,
+      modalOpen: false,
     };
+
+    this.handleClose = this.handleClose.bind(this);
 
     this.list = React.createRef();
   }
@@ -76,6 +87,31 @@ class HomePage extends Component {
     this.setState({
       request: event.target.value
     });
+  }
+
+  connectToStellar(privateKey) {
+
+    try {
+      // Derive Keypair object and public key (that starts with a G) from the secret
+      var sourceKeypair = StellarSdk.Keypair.fromSecret(privateKey);
+      var sourcePublicKey = sourceKeypair.publicKey();
+      // Configure StellarSdk to talk to the horizon instance hosted by Stellar.org
+      // To use the live network, set the hostname to 'horizon.stellar.org'
+      var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+      StellarSdk.Network.useTestNetwork();
+      server.loadAccount(sourcePublicKey)
+        .then(function (account) {
+          var transaction = new StellarSdk.TransactionBuilder(account)
+            .build();
+          console.log(account);
+        })
+        .catch(function (e) {
+          console.log(e);
+        });
+    } catch (error) {
+      this.setState({ modalOpen: !this.state.modalOpen });
+    }
+
   }
 
   handleMakeRequest() {
@@ -105,6 +141,10 @@ class HomePage extends Component {
     this.list.current.newData(filteredEntries);
   }
 
+  handleClose() {
+    this.setState({ modalOpen: false });
+  };
+
   // render
   render() {
     return (
@@ -112,10 +152,13 @@ class HomePage extends Component {
         <AppTopBar
           title="Digital Health Literacy"
           connecting={(privateKey) => {
-            console.log(privateKey);
+            this.connectToStellar(privateKey);
           }}
           disconnecting={(privateKey) => {
             console.log("disconnecting");
+          }}
+          creatingAccount={() => {
+            console.log("Need to create account");
           }}
           connected={false}
         />
@@ -151,6 +194,29 @@ class HomePage extends Component {
             </FormControl>
           </Grid>
         </Grid>
+
+
+        <Dialog
+          open={this.state.modalOpen}
+          onClose={this.handleClose}
+          aria-labelledby="responsive-dialog-title"
+        >
+          <DialogTitle id="responsive-dialog-title">{"Use Google's location service?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Let Google help apps determine location. This means sending anonymous location data to
+              Google, even when no apps are running.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Disagree
+            </Button>
+            <Button onClick={this.handleClose} color="primary">
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         <div className={this.state.madeFirstRequest ? "hidden" : "show"}>
           <Grid container>

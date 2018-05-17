@@ -20,8 +20,12 @@ class AppTopBar extends Component {
     privateKey: '',
   }
 
+  handleCreatedAccount = _=> {
+    this.props.creatingAccount();
+  }
+
   handleDisconnected = _ => {
-      this.props.disconnecting();
+    this.props.disconnecting();
   }
 
   handleConnectedEvent = _ => {
@@ -29,9 +33,9 @@ class AppTopBar extends Component {
     this.handleClose();
   };
 
-  handleKeyPress= event => {
-    if(event.keyCode === 13) {
-        this.handleConnectedEvent();
+  handleKeyPress = event => {
+    if (event.keyCode === 13) {
+      this.handleConnectedEvent();
     }
   };
 
@@ -69,7 +73,7 @@ class AppTopBar extends Component {
               open={this.state.anchorElement !== null}
               onClose={this.handleClose}
             >
-              <MenuItem>
+              <MenuItem >
                 <TextField
                   id="private_key"
                   label="Insérez votre private key :"
@@ -78,8 +82,11 @@ class AppTopBar extends Component {
                   onKeyUp={this.handleKeyPress}
                 />
               </MenuItem>
-              <MenuItem onClick={this.handleConnectedEvent}>
+              <MenuItem style={{ justifyContent: 'center', marginTop: 20 }} onClick={this.handleConnectedEvent}>
                 Login
+              </MenuItem>
+              <MenuItem style={{ color: 'blue', fontSize: 12 }} onClick={this.handleCreatedAccount}>
+                Pas encore de compte ?
               </MenuItem>
             </Menu>
           </Grid>
