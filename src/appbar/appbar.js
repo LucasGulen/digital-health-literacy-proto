@@ -1,32 +1,32 @@
 // React
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 // MaterialUI
-import Button from 'material-ui/Button';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Grid from 'material-ui/Grid';
-import Typography from 'material-ui/Typography';
-import TextField from 'material-ui/TextField';
-import Menu, { MenuItem } from 'material-ui/Menu';
+import Button from "material-ui/Button";
+import AppBar from "material-ui/AppBar";
+import Toolbar from "material-ui/Toolbar";
+import Grid from "material-ui/Grid";
+import Typography from "material-ui/Typography";
+import TextField from "material-ui/TextField";
+import Menu, { MenuItem } from "material-ui/Menu";
 
 // Styles
-import './appbar.css';
+import "./appbar.css";
 
 class AppTopBar extends Component {
-
   state = {
     anchorElement: null,
-    privateKey: '',
-  }
+    privateKey: "",
+  };
 
-  handleCreatedAccount = _=> {
+  handleCreatedAccount = _ => {
+    this.setState({anchorElement : null});
     this.props.creatingAccount();
-  }
+  };
 
   handleDisconnected = _ => {
     this.props.disconnecting();
-  }
+  };
 
   handleConnectedEvent = _ => {
     this.props.connecting(this.state.privateKey);
@@ -63,17 +63,17 @@ class AppTopBar extends Component {
               id="menu-appbar"
               anchorEl={this.state.anchorElement}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right"
               }}
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right"
               }}
               open={this.state.anchorElement !== null}
               onClose={this.handleClose}
             >
-              <MenuItem >
+              <MenuItem>
                 <TextField
                   id="private_key"
                   label="Insérez votre private key :"
@@ -82,10 +82,16 @@ class AppTopBar extends Component {
                   onKeyUp={this.handleKeyPress}
                 />
               </MenuItem>
-              <MenuItem style={{ justifyContent: 'center', marginTop: 20 }} onClick={this.handleConnectedEvent}>
+              <MenuItem
+                style={{ justifyContent: "center", marginTop: 20 }}
+                onClick={this.handleConnectedEvent}
+              >
                 Login
               </MenuItem>
-              <MenuItem style={{ color: 'blue', fontSize: 12 }} onClick={this.handleCreatedAccount}>
+              <MenuItem
+                style={{ color: "blue", fontSize: 12 }}
+                onClick={this.handleCreatedAccount}
+              >
                 Pas encore de compte ?
               </MenuItem>
             </Menu>
@@ -115,9 +121,7 @@ class AppTopBar extends Component {
                 {this.props.title}
               </Typography>
             </Grid>
-            <Grid item>
-              {this.renderConnected()}
-            </Grid>
+            <Grid item>{this.renderConnected()}</Grid>
           </Grid>
         </Toolbar>
       </AppBar>
