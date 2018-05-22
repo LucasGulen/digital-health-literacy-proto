@@ -373,7 +373,7 @@ class HomePage extends Component {
         <Grid container className="flex-column-center">
           <Grid item style={{ paddingTop: 10 }}>
             <img
-              className={this.state.madeFirstRequest ? "active" : "collapsed"}
+              className={this.state.madeFirstRequest ? "collapsed" : "active"}
               src={require("./../assets/images/logoHealth.svg")}
               alt="Digital Health Literacy Logo"
               width="200"
@@ -381,7 +381,8 @@ class HomePage extends Component {
           </Grid>
 
           <Grid item xs={12} style={{ width: "40%" }}>
-            <FormControl style={{ width: "100%" }}>
+           <div  style={{ width: "10%" }}></div>
+            <FormControl style={{ width: "80%" }}>
               <InputLabel htmlFor="adornment-recherche">
                 Votre recherche
               </InputLabel>
