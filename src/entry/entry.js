@@ -13,17 +13,23 @@ export default class Entry {
     }
 
     equals(entry) {
+        let found = false;        
         if (this.pathologie.toLowerCase().includes(entry.pathologie.toLowerCase())) {
-            return true;
+            found = true;
         }
-        let found = false;
         this.themes.forEach((theme) => {
             if (theme.toLowerCase().includes(entry.themes[0].toLowerCase())) {
                 found = true;
             }
         });
         if (found) {
-            return true;
+            if ((entry.acces === 'Tous' || entry.acces === this.acces) 
+                && (entry.langue === 'Toutes' || entry.langue === this.langue)
+                && (entry.population === 'Toutes' || entry.population === this.population)) {
+                return true;
+            } else {
+                return false;
+            }
         }
         return false;
     }
