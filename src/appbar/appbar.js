@@ -113,7 +113,7 @@ class AppTopBar extends Component {
 
   render() {
     return (
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <Grid container className="flex-row-space-between">
             <Grid item>

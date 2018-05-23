@@ -11,6 +11,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Search from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import FilterList from '@material-ui/icons/FilterList';
+import Add from '@material-ui/icons/Add';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import TextField from '@material-ui/core/TextField';
 
 import Dialog from "@material-ui/core/Dialog";
@@ -28,6 +30,9 @@ import axios from "axios";
 import Entry from "./../entry/entry";
 import AppTopBar from "./../appbar/appbar";
 import CardsList from "./../list/list";
+import { animateScroll } from 'react-scroll'
+
+
 
 // Styles
 import "./homepage.css";
@@ -336,7 +341,7 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        <AppTopBar
+        <AppTopBar style={{ position: 'fixed' }}
           title="Digital Health Literacy"
           connecting={privateKey => {
             this.connectToCowaboo(privateKey);
@@ -359,7 +364,7 @@ class HomePage extends Component {
           connected={this.state.connected}
         />
         <Grid container className="flex-column-center">
-          <Grid item style={{ paddingTop: 10 }}>
+          <Grid item style={{ paddingTop: 65 }}>
             <img
               className={this.state.madeFirstRequest ? "collapsed" : "active"}
               src={require("./../assets/images/logoHealth.svg")}
@@ -369,55 +374,57 @@ class HomePage extends Component {
           </Grid>
 
           <Grid item xs={12} style={{ width: "40%" }}>
-            <span className={"hidden"}>
-              <Button
-                variant="fab"
-                color="primary"
-                aria-label="add"
-                disabled={true}
-              >
-                <FilterList />
-              </Button>
-            </span>
-            <FormControl style={{ width: "80%" }}>
-              <InputLabel htmlFor="adornment-recherche">
-                Votre recherche
+            <div style={{ backgroundColor: 'white', width: '100%' }}>
+              <span className={"hidden"}>
+                <Button
+                  variant="fab"
+                  color="primary"
+                  aria-label="add"
+                  disabled={true}
+                >
+                  <FilterList />
+                </Button>
+              </span>
+              <FormControl style={{ width: "80%" }}>
+                <InputLabel htmlFor="adornment-recherche">
+                  Votre recherche
               </InputLabel>
-              <Input
-                id="adornment-recherche"
-                type={"text"}
-                value={this.state.request}
-                onChange={this.handleChangeRequest}
-                onKeyUp={event => {
-                  if (event.keyCode === 13) {
-                    this.handleMakeRequest();
+                <Input
+                  id="adornment-recherche"
+                  type={"text"}
+                  value={this.state.request}
+                  onChange={this.handleChangeRequest}
+                  onKeyUp={event => {
+                    if (event.keyCode === 13) {
+                      this.handleMakeRequest();
+                    }
+                  }}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Rechercher"
+                        onClick={this.handleMakeRequest}
+                      >
+                        <Search />
+                      </IconButton>
+                    </InputAdornment>
                   }
-                }}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Rechercher"
-                      onClick={this.handleMakeRequest}
-                    >
-                      <Search />
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <span className={this.state.madeFirstRequest ? "show" : "hidden"}>
-              <Button
-                variant="fab"
-                color="primary"
-                aria-label="add"
-                disabled={!this.state.madeFirstRequest}
-                onClick={() => {
-                  this.setState({ searchOpen: !this.state.searchOpen });
-                }}
-              >
-                <FilterList />
-              </Button>
-            </span>
+                />
+              </FormControl>
+              <span className={this.state.madeFirstRequest ? "show" : "hidden"}>
+                <Button
+                  variant="fab"
+                  color="primary"
+                  aria-label="add"
+                  disabled={!this.state.madeFirstRequest}
+                  onClick={() => {
+                    this.setState({ searchOpen: !this.state.searchOpen });
+                  }}
+                >
+                  <FilterList />
+                </Button>
+              </span>
+            </div>
           </Grid>
         </Grid>
         {this.renderNotif()}
@@ -447,7 +454,34 @@ class HomePage extends Component {
             </Grid>
           </Grid>
         </div>
+        <span style={{ position: 'fixed', right: '6%', bottom: '16%' }}>
+          <Button
+            variant="fab"
+            color="primary"
+            aria-label="add"
+            onClick={() => {
+              animateScroll.scrollToTop();
+            }}
+          >
+            <ArrowUpward />
+          </Button>
+        </span>
+
+        <span style={{ position: 'fixed', right: '6%', bottom: '7%' }}>
+          <Button
+            variant="fab"
+            color="primary"
+            aria-label="add"
+            onClick={() => {
+              animateScroll.scrollToTop();
+            }}
+          >
+            <Add />
+          </Button>
+        </span>
       </div>
+
+
     );
   }
 }

@@ -55,13 +55,13 @@ class CardsList extends Component {
                 <div style={{ textAlign: 'center', minHeight: 50 }}><CircularProgress /></div>
             );
         }
-        if (Object.keys(this.state.allEntries).length === 0) {
+        /*if (Object.keys(this.state.allEntries).length === 0) {
             return (
                 <p style={{ textAlign: 'center' }}>
                     <b>Aucune référence ne correspond à votre recherche !</b>
                 </p>
             );
-        }
+        }*/
         return (
             <InfiniteScroll
                 dataLength={this.state.itemsToShow.length} //This is important field to render the next data
