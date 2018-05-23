@@ -86,7 +86,9 @@ class CardEntry extends Component {
                             </div>
                             <div>
                                 <Tooltip placement="bottom" title={this.props.connected ? 'Vote positif' : 'Veuillez vous connecter pour voter'}>
-                                    <ThumbUp className={'clickable-icon-green'} />
+                                    <ThumbUp className={'clickable-icon-green'} onClick={() => {
+                                        console.log("Thumbs up");
+                                    }}/>
                                 </Tooltip>
                                 <Tooltip placement="bottom" title={this.props.connected ? 'Vote négatif' : 'Veuillez vous connecter pour voter'}>
                                     <ThumbDown style={{ marginLeft: 10 }} className={'clickable-icon-red'} />
