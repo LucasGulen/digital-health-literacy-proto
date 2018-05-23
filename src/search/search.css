@@ -1,0 +1,9 @@
+.search-show {
+    max-height: 200px;
+    transition: max-height 1s linear;
+  }
+  
+  .search-hide {
+    max-height: 0px;
+    transition: max-height 1s linear;
+  }
