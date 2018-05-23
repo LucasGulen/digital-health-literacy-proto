@@ -20,7 +20,6 @@ class AppTopBar extends Component {
   };
 
   handleCreatedAccount = _ => {
-    this.setState({anchorElement : null});
     this.props.creatingAccount();
   };
 
