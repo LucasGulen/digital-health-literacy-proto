@@ -96,6 +96,7 @@ class HomePage extends Component {
           let parsedEntry;
           try {
             parsedEntry = JSON.parse(entry.value);
+            console.log(parsedEntry);
             langues.add(parsedEntry.langue);
             populations.add(parsedEntry.population);
             allEntries.push(
@@ -109,7 +110,8 @@ class HomePage extends Component {
                 parsedEntry.societe,
                 parsedEntry.date.substring(0, parsedEntry.date.length - 2),
                 parsedEntry.langue,
-                parsedEntry.population
+                parsedEntry.population,
+                parsedEntry.verifie,
               )
             );
           } catch (error) { }

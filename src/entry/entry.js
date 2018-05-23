@@ -1,5 +1,5 @@
 export default class Entry {
-    constructor(id, pathologie, themes, typeSource, lienSource, acces, societe, date, langue, population) {
+    constructor(id, pathologie, themes, typeSource, lienSource, acces, societe, date, langue, population, verifie) {
         this.id = id;
         this.pathologie = pathologie;
         this.themes = themes;
@@ -10,6 +10,7 @@ export default class Entry {
         this.date = date;
         this.langue = langue;
         this.population = population;
+        this.verifie = verifie;
     }
 
     equals(entry) {
