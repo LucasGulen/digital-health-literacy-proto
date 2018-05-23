@@ -45,7 +45,7 @@ class HomePage extends Component {
     super(props);
 
     // get all the data
-    this.getAllEntries(); 
+    this.getAllEntries();
 
     // binds
     this.handleChangeRequest = this.handleChangeRequest.bind(this);
@@ -361,7 +361,16 @@ class HomePage extends Component {
           </Grid>
 
           <Grid item xs={12} style={{ width: "40%" }}>
-           <div  style={{ width: "10%" }}></div>
+            <span className={"hidden"}>
+              <Button
+                variant="fab"
+                color="primary"
+                aria-label="add"
+                disabled={true}
+              >
+                <FilterList />
+              </Button>
+            </span>
             <FormControl style={{ width: "80%" }}>
               <InputLabel htmlFor="adornment-recherche">
                 Votre recherche
@@ -393,6 +402,7 @@ class HomePage extends Component {
                 variant="fab"
                 color="primary"
                 aria-label="add"
+                disabled={!this.state.madeFirstRequest}
                 onClick={() => {
                   this.setState({ searchOpen: !this.state.searchOpen });
                 }}
@@ -410,12 +420,12 @@ class HomePage extends Component {
           <Grid container >
             <Grid item lg={2} xs={false} />
             <Grid item lg={8} xs={12}>
-            <SearchComponent 
+              <SearchComponent
                 searchopen={this.state.searchOpen ? "search-show" : "search-hide"}
                 ref={this.search}
-                langueChanged={(langue) => { this.setState({langue}, () => this.filterContent())}}
-                populationChanged={(population) => { this.setState({population}, () => this.filterContent())}}
-                accesChanged={(acces) => { this.setState({acces}, () => this.filterContent())}}
+                langueChanged={(langue) => { this.setState({ langue }, () => this.filterContent()) }}
+                populationChanged={(population) => { this.setState({ population }, () => this.filterContent()) }}
+                accesChanged={(acces) => { this.setState({ acces }, () => this.filterContent()) }}
               />
             </Grid>
           </Grid>

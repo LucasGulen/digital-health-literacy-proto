@@ -20,7 +20,7 @@ const decodeUriComponent = require('decode-uri-component');
 class CardEntry extends Component {
 
     renderVerifie() {
-        if (this.props.entry.verifie) {
+        if (!this.props.entry.verifie) {
             return <Check style={{ color: 'green' }} />
         }
         return <Warning style={{ color: 'orange' }} />;

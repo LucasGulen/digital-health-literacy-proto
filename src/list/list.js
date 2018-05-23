@@ -24,6 +24,7 @@ class CardsList extends Component {
             itemsToShow: [],
             nextIndex: 0,
             hasMore: true,
+            loading: true,
         };
     }
 
@@ -39,16 +40,23 @@ class CardsList extends Component {
     }
 
     newData(data) {
-
         this.setState({
             nextIndex: numberOfCardsToShow,
             allEntries: data,
             itemsToShow: data.splice(0, numberOfCardsToShow),
             hasMore: true,
+            loading: false,
         });
     }
 
     render() {
+        if (!this.state.loading && this.state.allEntries.length === 0) {
+            return (
+                <p style={{ textAlign: 'center' }}>
+                    <b>Aucun résultat n'a été trouvé pour votre recherche!</b>
+                </p>
+            );
+        }
         return (
             <InfiniteScroll
                 dataLength={this.state.itemsToShow.length} //This is important field to render the next data
