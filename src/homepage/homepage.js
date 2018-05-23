@@ -2,15 +2,18 @@
 import React, { Component } from "react";
 
 // MaterialUI imports
-import Grid from "material-ui/Grid";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
-import IconButton from "@material-ui/core/IconButton";
-import Search from "@material-ui/icons/Search";
-import Button from "@material-ui/core/Button";
-import FilterList from "@material-ui/icons/FilterList";
+import Grid from 'material-ui/Grid';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import IconButton from '@material-ui/core/IconButton';
+import Search from '@material-ui/icons/Search';
+import Button from '@material-ui/core/Button';
+import FilterList from '@material-ui/icons/FilterList';
+import Add from '@material-ui/icons/Add';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import ModalAuthentification from "../modal/modalAuthentification.js";
 import ModalCreateAccount from "../modal/modalCreateAccount.js";
@@ -25,6 +28,9 @@ import axios from "axios";
 import Entry from "./../entry/entry";
 import AppTopBar from "./../appbar/appbar";
 import CardsList from "./../list/list";
+import { animateScroll } from 'react-scroll'
+
+
 
 // Styles
 import "./homepage.css";
@@ -51,6 +57,7 @@ class HomePage extends Component {
     this.state = {
       request: "",
       madeFirstRequest: false,
+      hasFetchedData: false,
       searchOpen: false,
       acces: "Tous",
       langue: "Toutes",
@@ -60,7 +67,8 @@ class HomePage extends Component {
       notif: false,
       notifConnected: false,
       connected: false,
-      user: {}
+      user: {},
+      tooltipMessage: 'Veuillez vous connecter afin proposer du contenu'
     };
 
     // refs
@@ -77,6 +85,7 @@ class HomePage extends Component {
         "http://groups.cowaboo.net/2018/group08/public/api/observatory?observatoryId=DHL"
       )
       .then(response => {
+        this.setState({ hasFetchedData: true });
         const entries = response.data.dictionary.entries;
         for (let key in entries) {
           const entry = entries[key];
@@ -100,7 +109,7 @@ class HomePage extends Component {
                 parsedEntry.verifie
               )
             );
-          } catch (error) {}
+          } catch (error) { }
         }
         populations.delete("na");
         if (this.state.madeFirstRequest) {
@@ -127,7 +136,8 @@ class HomePage extends Component {
           connected: !this.state.connected,
           user: response.data,
           notifConnected: true,
-          notif: true
+          notif: true,
+          tooltipMessage: 'Proposer du contenu'
         });
       })
       .catch(e => {
@@ -141,7 +151,9 @@ class HomePage extends Component {
 
   handleMakeRequest() {
     this.setState({ madeFirstRequest: true });
-    this.filterContent();
+    if (this.state.hasFetchedData) {
+      this.filterContent();
+    }
   }
 
   filterContent() {
@@ -155,7 +167,8 @@ class HomePage extends Component {
       null,
       null,
       this.state.langue,
-      this.state.population
+      this.state.population,
+      true
     );
     let filteredEntries = [];
     allEntries.forEach(entry => {
@@ -204,7 +217,7 @@ class HomePage extends Component {
   renderNotif() {
     return (
       <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         open={this.state.notif}
         onClose={this.handleCloseNotif}
         ContentProps={{
@@ -226,7 +239,7 @@ class HomePage extends Component {
     document.body.style.overflow = 'visible';            
     return (
       <div>
-        <AppTopBar
+        <AppTopBar style={{ position: 'fixed' }}
           title="Digital Health Literacy"
           connecting={privateKey => {
             this.connectToCowaboo(privateKey);
@@ -236,7 +249,8 @@ class HomePage extends Component {
               connected: !this.state.connected,
               user: {},
               notif: true,
-              notifConnected: false
+              notifConnected: false,
+              tooltipMessage: 'Veuillez vous connecter afin proposer du contenu'
             });
           }}
           creatingAccount={_ => {
@@ -245,7 +259,7 @@ class HomePage extends Component {
           connected={this.state.connected}
         />
         <Grid container className="flex-column-center">
-          <Grid item style={{ paddingTop: 10 }}>
+          <Grid item style={{ paddingTop: 65 }}>
             <img
               className={this.state.madeFirstRequest ? "collapsed" : "active"}
               src={require("./../assets/images/logoHealth.svg")}
@@ -255,55 +269,62 @@ class HomePage extends Component {
           </Grid>
 
           <Grid item xs={12} style={{ width: "40%" }}>
-            <span className={"hidden"}>
-              <Button
-                variant="fab"
-                color="primary"
-                aria-label="add"
-                disabled={true}
-              >
-                <FilterList />
-              </Button>
-            </span>
-            <FormControl style={{ width: "80%" }}>
-              <InputLabel htmlFor="adornment-recherche">
-                Votre recherche
+            <div style={{ backgroundColor: 'white', width: '100%' }}>
+              <span className={"hidden"}>
+                <Button
+                  variant="fab"
+                  color="primary"
+                  aria-label="add"
+                  disabled={true}
+                >
+                  <FilterList />
+                </Button>
+              </span>
+              <FormControl style={{ width: "79%" }}>
+                <InputLabel htmlFor="adornment-recherche">
+                  Votre recherche
               </InputLabel>
-              <Input
-                id="adornment-recherche"
-                type={"text"}
-                value={this.state.request}
-                onChange={this.handleChangeRequest}
-                onKeyUp={event => {
-                  if (event.keyCode === 13) {
-                    this.handleMakeRequest();
+                <Input
+                  id="adornment-recherche"
+                  type={"text"}
+                  value={this.state.request}
+                  onChange={this.handleChangeRequest}
+                  onKeyUp={event => {
+                    if (event.keyCode === 13) {
+                      this.handleMakeRequest();
+                    }
+                  }}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Rechercher"
+                        onClick={this.handleMakeRequest}
+                      >
+                        <Search />
+                      </IconButton>
+                    </InputAdornment>
                   }
-                }}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Rechercher"
-                      onClick={this.handleMakeRequest}
+                />
+              </FormControl>
+              <span className={this.state.madeFirstRequest ? "show" : "hidden"}>
+                <Tooltip disableHoverListener={!this.state.madeFirstRequest} placement="right" title={'Filtrer'}>
+                  <span>
+                    <Button
+                      variant="fab"
+                      color="primary"
+                      aria-label="add"
+                      disabled={!this.state.madeFirstRequest}
+                      onClick={() => {
+                        this.setState({ searchOpen: !this.state.searchOpen });
+                      }}
                     >
-                      <Search />
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <span className={this.state.madeFirstRequest ? "show" : "hidden"}>
-              <Button
-                variant="fab"
-                color="primary"
-                aria-label="add"
-                disabled={!this.state.madeFirstRequest}
-                onClick={() => {
-                  this.setState({ searchOpen: !this.state.searchOpen });
-                }}
-              >
-                <FilterList />
-              </Button>
-            </span>
+                      <FilterList />
+
+                    </Button>
+                  </span>
+                </Tooltip>
+              </span>
+            </div>
           </Grid>
         </Grid>
         {this.renderNotif()}
@@ -336,11 +357,45 @@ class HomePage extends Component {
           <Grid container>
             <Grid item lg={2} xs={false} />
             <Grid item lg={8} xs={12}>
-              <CardsList ref={this.list} />
+              <CardsList ref={this.list} connected={this.state.connected} />
             </Grid>
           </Grid>
         </div>
+        <span style={{ position: 'fixed', right: '6%', bottom: '16%' }}>
+          <Tooltip placement="left" title={'Remonter'}>
+            <Button
+              variant="fab"
+              color="primary"
+              aria-label="add"
+              onClick={() => {
+                animateScroll.scrollToTop();
+              }}
+            >
+              <ArrowUpward />
+            </Button>
+          </Tooltip>
+        </span>
+
+        <span style={{ position: 'fixed', right: '6%', bottom: '7%' }}>
+          <Tooltip placement="left" title={this.state.tooltipMessage}>
+            <div>
+              <Button
+                variant="fab"
+                color="primary"
+                aria-label="add"
+                onClick={() => {
+                  animateScroll.scrollToTop();
+                }}
+                disabled={!this.state.connected}
+              >
+                <Add />
+              </Button>
+            </div>
+          </Tooltip>
+        </span>
       </div>
+
+
     );
   }
 }

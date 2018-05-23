@@ -6,6 +6,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
+import Grid from 'material-ui/Grid';
 
 import "./search.css";
 
@@ -46,16 +47,13 @@ class SearchComponent extends Component {
     }
 
     handleAccesChanged(event) {
-        this.setState({acces: event.target.value},
+        this.setState({ acces: event.target.value },
             this.props.accesChanged(event.target.value)
         );
-        
+
     }
 
     renderLangues() {
-        if (!this.state.listLangues) {
-            return;
-        }
         return (
             <Select
                 value={this.state.langue}
@@ -64,13 +62,14 @@ class SearchComponent extends Component {
                 name="Accès"
             >
                 <MenuItem value={'Toutes'}>Toutes</MenuItem>
-                {
+                {this.state.listLangues ?
                     Array.from(this.state.listLangues.values()).map((langue, index) => {
                         return (
                             <MenuItem key={index} value={langue}>{langue}</MenuItem>
 
                         );
                     })
+                    : null
                 }
             </Select>
         );
@@ -102,29 +101,38 @@ class SearchComponent extends Component {
         return (
             <Card style={{ marginTop: 10 }} className={this.props.searchopen}>
                 <CardContent>
-                    <FormControl>
-                        <FormHelperText>Accès</FormHelperText>
-                        <Select
-                            value={this.state.acces}
-                            onChange={this.handleAccesChanged}
-                            displayEmpty
-                            name="Accès"
-                        >
-                            <MenuItem value={'Tous'}>Tous</MenuItem>
-                            <MenuItem value={'Payant'}>Payants</MenuItem>
-                            <MenuItem value={'Libre'}>Libres</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <Grid container style={{ justifyContent: 'space-evenly' }}>
+                        <Grid item xs={2}>
+                            <FormControl>
+                                <FormHelperText>Accès</FormHelperText>
+                                <Select
+                                    value={this.state.acces}
+                                    onChange={this.handleAccesChanged}
+                                    displayEmpty
+                                    name="Accès"
+                                >
+                                    <MenuItem value={'Tous'}>Tous</MenuItem>
+                                    <MenuItem value={'Payant'}>Payants</MenuItem>
+                                    <MenuItem value={'Libre'}>Libres</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={2}>
 
-                    <FormControl>
-                        <FormHelperText>Langue</FormHelperText>
-                        {this.renderLangues()}
-                    </FormControl>
+                            <FormControl>
+                                <FormHelperText>Langue</FormHelperText>
+                                {this.renderLangues()}
+                            </FormControl>
+                        </Grid>
 
-                    <FormControl>
-                        <FormHelperText>Population</FormHelperText>
-                        {this.renderPopulations()}
-                    </FormControl>
+                        <Grid item xs={2}>
+
+                            <FormControl>
+                                <FormHelperText>Population</FormHelperText>
+                                {this.renderPopulations()}
+                            </FormControl>
+                        </Grid>
+                    </Grid>
                 </CardContent>
             </Card>
         );
