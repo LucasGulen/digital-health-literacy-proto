@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import FilterList from '@material-ui/icons/FilterList';
 import Add from '@material-ui/icons/Add';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import ModalAuthentification from "../modal/modalAuthentification.js";
 import ModalCreateAccount from "../modal/modalCreateAccount.js";
@@ -107,7 +108,7 @@ class HomePage extends Component {
                 parsedEntry.verifie
               )
             );
-          } catch (error) {}
+          } catch (error) { }
         }
         populations.delete("na");
         if (this.state.madeFirstRequest) {
@@ -208,7 +209,7 @@ class HomePage extends Component {
   renderNotif() {
     return (
       <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         open={this.state.notif}
         onClose={this.handleCloseNotif}
         ContentProps={{
@@ -359,16 +360,21 @@ class HomePage extends Component {
         </span>
 
         <span style={{ position: 'fixed', right: '6%', bottom: '7%' }}>
-          <Button
-            variant="fab"
-            color="primary"
-            aria-label="add"
-            onClick={() => {
-              animateScroll.scrollToTop();
-            }}
-          >
-            <Add />
-          </Button>
+          <Tooltip placement="left" title="Veuillez vous connecter afin proposer du contenu">
+            <div>
+              <Button
+                variant="fab"
+                color="primary"
+                aria-label="add"
+                onClick={() => {
+                  animateScroll.scrollToTop();
+                }}
+                disabled={!this.state.connected}
+              >
+                <Add />
+              </Button>
+            </div>
+          </Tooltip>
         </span>
       </div>
 

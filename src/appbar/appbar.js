@@ -24,7 +24,9 @@ class AppTopBar extends Component {
   };
 
   handleDisconnected = _ => {
-    this.props.disconnecting();
+    this.setState({
+      privateKey: ""
+    }, () => { this.props.disconnecting() });
   };
 
   handleConnectedEvent = _ => {
