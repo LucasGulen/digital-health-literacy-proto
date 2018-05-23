@@ -62,6 +62,7 @@ class HomePage extends Component {
     this.state = {
       request: '',
       madeFirstRequest: false,
+      hasFetchedData: false,
       searchOpen: false,
       acces: 'Tous',
       langue: 'Toutes',
@@ -90,13 +91,13 @@ class HomePage extends Component {
         "http://groups.cowaboo.net/2018/group08/public/api/observatory?observatoryId=DHL"
       )
       .then(response => {
+        this.setState({ hasFetchedData: true });
         const entries = response.data.dictionary.entries;
         for (let key in entries) {
           const entry = entries[key];
           let parsedEntry;
           try {
             parsedEntry = JSON.parse(entry.value);
-            console.log(parsedEntry);
             langues.add(parsedEntry.langue);
             populations.add(parsedEntry.population);
             allEntries.push(
@@ -179,7 +180,9 @@ class HomePage extends Component {
 
   handleMakeRequest() {
     this.setState({ madeFirstRequest: true });
-    this.filterContent();
+    if (this.state.hasFetchedData) {
+      this.filterContent();
+    }
   }
 
   filterContent() {
@@ -194,6 +197,7 @@ class HomePage extends Component {
       null,
       this.state.langue,
       this.state.population,
+      true
     );
     let filteredEntries = [];
     allEntries.forEach(entry => {
