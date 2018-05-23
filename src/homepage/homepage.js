@@ -67,7 +67,8 @@ class HomePage extends Component {
       notif: false,
       notifConnected: false,
       connected: false,
-      user: {}
+      user: {},
+      tooltipMessage: 'Veuillez vous connecter afin proposer du contenu'
     };
 
     // refs
@@ -135,7 +136,8 @@ class HomePage extends Component {
           connected: !this.state.connected,
           user: response.data,
           notifConnected: true,
-          notif: true
+          notif: true,
+          tooltipMessage: 'Proposer du contenu'
         });
       })
       .catch(e => {
@@ -240,7 +242,8 @@ class HomePage extends Component {
               connected: !this.state.connected,
               user: {},
               notif: true,
-              notifConnected: false
+              notifConnected: false,
+              tooltipMessage: 'Veuillez vous connecter afin proposer du contenu'
             });
           }}
           creatingAccount={_ => {
@@ -297,17 +300,22 @@ class HomePage extends Component {
                 />
               </FormControl>
               <span className={this.state.madeFirstRequest ? "show" : "hidden"}>
-                <Button
-                  variant="fab"
-                  color="primary"
-                  aria-label="add"
-                  disabled={!this.state.madeFirstRequest}
-                  onClick={() => {
-                    this.setState({ searchOpen: !this.state.searchOpen });
-                  }}
-                >
-                  <FilterList />
-                </Button>
+                <Tooltip disableHoverListener={!this.state.madeFirstRequest} placement="right" title={'Filtrer'}>
+                  <span>
+                    <Button
+                      variant="fab"
+                      color="primary"
+                      aria-label="add"
+                      disabled={!this.state.madeFirstRequest}
+                      onClick={() => {
+                        this.setState({ searchOpen: !this.state.searchOpen });
+                      }}
+                    >
+                      <FilterList />
+
+                    </Button>
+                  </span>
+                </Tooltip>
               </span>
             </div>
           </Grid>
@@ -342,25 +350,27 @@ class HomePage extends Component {
           <Grid container>
             <Grid item lg={2} xs={false} />
             <Grid item lg={8} xs={12}>
-              <CardsList ref={this.list} />
+              <CardsList ref={this.list} connected={this.state.connected} />
             </Grid>
           </Grid>
         </div>
         <span style={{ position: 'fixed', right: '6%', bottom: '16%' }}>
-          <Button
-            variant="fab"
-            color="primary"
-            aria-label="add"
-            onClick={() => {
-              animateScroll.scrollToTop();
-            }}
-          >
-            <ArrowUpward />
-          </Button>
+          <Tooltip placement="left" title={'Remonter'}>
+            <Button
+              variant="fab"
+              color="primary"
+              aria-label="add"
+              onClick={() => {
+                animateScroll.scrollToTop();
+              }}
+            >
+              <ArrowUpward />
+            </Button>
+          </Tooltip>
         </span>
 
         <span style={{ position: 'fixed', right: '6%', bottom: '7%' }}>
-          <Tooltip placement="left" title="Veuillez vous connecter afin proposer du contenu">
+          <Tooltip placement="left" title={this.state.tooltipMessage}>
             <div>
               <Button
                 variant="fab"

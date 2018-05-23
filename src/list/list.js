@@ -74,7 +74,7 @@ class CardsList extends Component {
                     </p>
                 }>
                 {this.state.itemsToShow.map((entry) =>
-                    <CardEntry key={entry.id} entry={entry} />
+                    <CardEntry key={entry.id} entry={entry} connected={this.props.connected}/>
                 )}
             </InfiniteScroll>
         );

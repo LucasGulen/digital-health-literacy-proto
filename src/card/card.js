@@ -13,17 +13,29 @@ import Warning from '@material-ui/icons/Warning';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import ThumbDown from '@material-ui/icons/ThumbDown';
 import Create from '@material-ui/icons/Create';
+import IconButton from '@material-ui/core/IconButton';
 
+import Tooltip from '@material-ui/core/Tooltip';
+
+import './card.css';
 // Helper functions
 const decodeUriComponent = require('decode-uri-component');
 
 class CardEntry extends Component {
 
     renderVerifie() {
-        if (!this.props.entry.verifie) {
-            return <Check style={{ color: 'green' }} />
+        if (this.props.entry.verifie) {
+            return (
+                <Tooltip placement="top" title={'Contenu vérifié'}>
+                    <Check style={{ color: 'green' }} />
+                </Tooltip>
+            );
         }
-        return <Warning style={{ color: 'orange' }} />;
+        return (
+            <Tooltip placement="top" title={'Contenu non vérifié'}>
+                <Warning style={{ color: 'orange' }} />
+            </Tooltip>
+        );
     }
 
     render() {
@@ -68,11 +80,17 @@ class CardEntry extends Component {
                         <Grid item xs={1}>
                             <div>
                                 {this.renderVerifie()}
-                                <Create />                                
+                                <Tooltip placement="top" title={'Modifier cette référence'}>
+                                    <Create style={{ marginLeft: 10 }} className={'clickable-icon-orange'} />
+                                </Tooltip>
                             </div>
                             <div>
-                                <ThumbUp />                                
-                                <ThumbDown />
+                                <Tooltip placement="bottom" title={this.props.connected ? 'Vote positif' : 'Veuillez vous connecter pour voter'}>
+                                    <ThumbUp className={'clickable-icon-green'} />
+                                </Tooltip>
+                                <Tooltip placement="bottom" title={this.props.connected ? 'Vote négatif' : 'Veuillez vous connecter pour voter'}>
+                                    <ThumbDown style={{ marginLeft: 10 }} className={'clickable-icon-red'} />
+                                </Tooltip>
                             </div>
                         </Grid>
                     </Grid>
