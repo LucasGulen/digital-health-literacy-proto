@@ -117,7 +117,11 @@ class HomePage extends Component {
           } catch (error) { }
         }
         populations.delete('na');
-        this.list.current.newData(allEntries);
+        if (this.state.madeFirstRequest) {
+          this.filterContent();
+        } else {
+          this.list.current.newData(allEntries);
+        }
         this.search.current.updateLists(langues, populations);
       });
   }
