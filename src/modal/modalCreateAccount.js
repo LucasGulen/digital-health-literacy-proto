@@ -44,7 +44,6 @@ class ModalCreateAccount extends Component {
 }
 
   closeModal() {
-    this.props.refresh();    
     this.setState({ open: false, msgEmailIncorrect: false });
   }
 

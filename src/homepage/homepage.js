@@ -2,18 +2,18 @@
 import React, { Component } from "react";
 
 // MaterialUI imports
-import Grid from 'material-ui/Grid';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import IconButton from '@material-ui/core/IconButton';
-import Search from '@material-ui/icons/Search';
-import Button from '@material-ui/core/Button';
-import FilterList from '@material-ui/icons/FilterList';
-import Add from '@material-ui/icons/Add';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import Tooltip from '@material-ui/core/Tooltip';
+import Grid from "material-ui/Grid";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import IconButton from "@material-ui/core/IconButton";
+import Search from "@material-ui/icons/Search";
+import Button from "@material-ui/core/Button";
+import FilterList from "@material-ui/icons/FilterList";
+import Add from "@material-ui/icons/Add";
+import ArrowUpward from "@material-ui/icons/ArrowUpward";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import ModalAuthentification from "../modal/modalAuthentification.js";
 import ModalCreateAccount from "../modal/modalCreateAccount.js";
@@ -28,12 +28,11 @@ import axios from "axios";
 import Entry from "./../entry/entry";
 import AppTopBar from "./../appbar/appbar";
 import CardsList from "./../list/list";
-import { animateScroll } from 'react-scroll'
-
-
+import { animateScroll } from "react-scroll";
 
 // Styles
 import "./homepage.css";
+import "./arrow_up.css";
 
 const allEntries = [];
 const langues = new Set();
@@ -68,7 +67,7 @@ class HomePage extends Component {
       notifConnected: false,
       connected: false,
       user: {},
-      tooltipMessage: 'Veuillez vous connecter afin proposer du contenu'
+      tooltipMessage: "Veuillez vous connecter afin proposer du contenu"
     };
 
     // refs
@@ -109,7 +108,7 @@ class HomePage extends Component {
                 parsedEntry.verifie
               )
             );
-          } catch (error) { }
+          } catch (error) {}
         }
         populations.delete("na");
         if (this.state.madeFirstRequest) {
@@ -137,7 +136,7 @@ class HomePage extends Component {
           user: response.data,
           notifConnected: true,
           notif: true,
-          tooltipMessage: 'Proposer du contenu'
+          tooltipMessage: "Proposer du contenu"
         });
       })
       .catch(e => {
@@ -179,11 +178,6 @@ class HomePage extends Component {
     this.list.current.newData(filteredEntries);
   }
 
-  refresh(){
-    console.log('refresh');
-    document.body.style.overflowY = 'auto';            
-  }
-
   renderModalCreateAccount() {
     return (
       <ModalCreateAccount
@@ -195,7 +189,6 @@ class HomePage extends Component {
         }
         buttonCancelText={"Annuler"}
         buttonValidate={"Valider"}
-        refresh={() =>{this.refresh()}}
       />
     );
   }
@@ -238,7 +231,8 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        <AppTopBar style={{ position: 'fixed' }}
+        <AppTopBar
+          style={{ position: "fixed" }}
           title="Digital Health Literacy"
           connecting={privateKey => {
             this.connectToCowaboo(privateKey);
@@ -249,7 +243,7 @@ class HomePage extends Component {
               user: {},
               notif: true,
               notifConnected: false,
-              tooltipMessage: 'Veuillez vous connecter afin proposer du contenu'
+              tooltipMessage: "Veuillez vous connecter afin proposer du contenu"
             });
           }}
           creatingAccount={_ => {
@@ -257,6 +251,7 @@ class HomePage extends Component {
           }}
           connected={this.state.connected}
         />
+
         <Grid container className="flex-column-center">
           <Grid item style={{ paddingTop: 65 }}>
             <img
@@ -268,7 +263,7 @@ class HomePage extends Component {
           </Grid>
 
           <Grid item xs={12} style={{ width: "40%" }}>
-            <div style={{ backgroundColor: 'white', width: '100%' }}>
+            <div style={{ backgroundColor: "white", width: "100%" }}>
               <span className={"hidden"}>
                 <Button
                   variant="fab"
@@ -282,7 +277,7 @@ class HomePage extends Component {
               <FormControl style={{ width: "79%" }}>
                 <InputLabel htmlFor="adornment-recherche">
                   Votre recherche
-              </InputLabel>
+                </InputLabel>
                 <Input
                   id="adornment-recherche"
                   type={"text"}
@@ -306,7 +301,11 @@ class HomePage extends Component {
                 />
               </FormControl>
               <span className={this.state.madeFirstRequest ? "show" : "hidden"}>
-                <Tooltip disableHoverListener={!this.state.madeFirstRequest} placement="right" title={'Filtrer'}>
+                <Tooltip
+                  disableHoverListener={!this.state.madeFirstRequest}
+                  placement="right"
+                  title={"Filtrer"}
+                >
                   <span>
                     <Button
                       variant="fab"
@@ -318,7 +317,6 @@ class HomePage extends Component {
                       }}
                     >
                       <FilterList />
-
                     </Button>
                   </span>
                 </Tooltip>
@@ -356,26 +354,31 @@ class HomePage extends Component {
           <Grid container>
             <Grid item lg={2} xs={false} />
             <Grid item lg={8} xs={12}>
-              <CardsList ref={this.list} connected={this.state.connected} show={this.state.madeFirstRequest}/>
+              <CardsList
+                ref={this.list}
+                connected={this.state.connected}
+                show={this.state.madeFirstRequest}
+              />
             </Grid>
           </Grid>
         </div>
-        <span style={{ position: 'fixed', right: '6%', bottom: '16%' }}>
-          <Tooltip placement="left" title={'Remonter'}>
+        <span style={{ position: "fixed", right: "6%", bottom: "16%" }}>
+          <Tooltip placement="left" title={"Remonter"}>
             <Button
               variant="fab"
-              color="primary"
+              color="default"
               aria-label="add"
               onClick={() => {
                 animateScroll.scrollToTop();
               }}
             >
-              <ArrowUpward />
+              <span hidden={!this.state.madeFirstRequest} className={"arrow"} />
+
             </Button>
           </Tooltip>
         </span>
 
-        <span style={{ position: 'fixed', right: '6%', bottom: '7%' }}>
+        <span style={{ position: "fixed", right: "6%", bottom: "7%" }}>
           <Tooltip placement="left" title={this.state.tooltipMessage}>
             <div>
               <Button
@@ -393,8 +396,6 @@ class HomePage extends Component {
           </Tooltip>
         </span>
       </div>
-
-
     );
   }
 }
