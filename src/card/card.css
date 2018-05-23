@@ -1,0 +1,14 @@
+.clickable-icon-green:hover {
+    color: green;
+    cursor: pointer;
+}
+
+.clickable-icon-red:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.clickable-icon-orange:hover {
+    color: orange;
+    cursor: pointer;
+}
