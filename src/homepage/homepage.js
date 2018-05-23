@@ -11,12 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Search from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import FilterList from '@material-ui/icons/FilterList';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -25,6 +20,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Snackbar from "@material-ui/core/Snackbar";
 
+import SearchComponent from "./../search/search";
 // HTTP
 import axios from "axios";
 
@@ -49,14 +45,11 @@ class HomePage extends Component {
     super(props);
 
     // get all the data
-    this.getAllEntries();
+    this.getAllEntries(); 
 
     // binds
     this.handleChangeRequest = this.handleChangeRequest.bind(this);
     this.handleMakeRequest = this.handleMakeRequest.bind(this);
-    this.handleAccesChanged = this.handleAccesChanged.bind(this);
-    this.handleLangueChanged = this.handleLangueChanged.bind(this);
-    this.handlePopulationChanged = this.handlePopulationChanged.bind(this);
 
     this.handleCloseCreateAccount = this.handleCloseCreateAccount.bind(this);
     this.handleCloseAuthentification = this.handleCloseAuthentification.bind(this);
@@ -87,6 +80,7 @@ class HomePage extends Component {
 
     // refs
     this.list = React.createRef();
+    this.search = React.createRef();
   }
 
   //data
@@ -122,6 +116,7 @@ class HomePage extends Component {
         }
         populations.delete('na');
         this.list.current.newData(allEntries);
+        this.search.current.updateLists(langues, populations);
       });
   }
 
@@ -179,23 +174,6 @@ class HomePage extends Component {
   handleMakeRequest() {
     this.setState({ madeFirstRequest: true });
     this.filterContent();
-  }
-
-  handleAccesChanged(event) {
-    this.setState({ acces: event.target.value },
-      () => { this.filterContent() });
-  }
-
-  handleLangueChanged(event) {
-    this.setState({ langue: event.target.value },
-      () => { this.filterContent() }
-    );
-  }
-
-  handlePopulationChanged(event) {
-    this.setState({ population: event.target.value },
-      () => { this.filterContent() }
-    );
   }
 
   filterContent() {
@@ -430,66 +408,13 @@ class HomePage extends Component {
           <Grid container >
             <Grid item lg={2} xs={false} />
             <Grid item lg={8} xs={12}>
-              <Card style={{ marginTop: 10 }} className={this.state.searchOpen ? "search-show" : "search-hide"}>
-                <CardContent>
-                  <FormControl>
-                    <FormHelperText>Accès</FormHelperText>
-
-                    <Select
-                      value={this.state.acces}
-                      onChange={this.handleAccesChanged}
-                      displayEmpty
-                      name="Accès"
-                    >
-                      <MenuItem value={'Tous'}>Tous</MenuItem>
-                      <MenuItem value={'Payant'}>Payants</MenuItem>
-                      <MenuItem value={'Libre'}>Libres</MenuItem>
-                    </Select>
-                  </FormControl>
-
-                  <FormControl>
-                    <FormHelperText>Langue</FormHelperText>
-
-                    <Select
-                      value={this.state.langue}
-                      onChange={this.handleLangueChanged}
-                      displayEmpty
-                      name="Accès"
-                    >
-                      <MenuItem value={'Toutes'}>Toutes</MenuItem>
-                      {
-                        Array.from(langues.values()).map((langue, index) => {
-                          return (
-                            <MenuItem key={index} value={langue}>{langue}</MenuItem>
-
-                          );
-                        })
-                      }
-                    </Select>
-                  </FormControl>
-
-                  <FormControl>
-                    <FormHelperText>Population</FormHelperText>
-
-                    <Select
-                      value={this.state.population}
-                      onChange={this.handlePopulationChanged}
-                      displayEmpty
-                      name="Accès"
-                    >
-                      <MenuItem value={'Toutes'}>Toutes</MenuItem>
-                      {
-                        Array.from(populations.values()).map((population, index) => {
-                          return (
-                            <MenuItem key={index} value={population}>{population}</MenuItem>
-
-                          );
-                        })
-                      }
-                    </Select>
-                  </FormControl>
-                </CardContent>
-              </Card>
+            <SearchComponent 
+                searchopen={this.state.searchOpen ? "search-show" : "search-hide"}
+                ref={this.search}
+                langueChanged={(langue) => { this.setState({langue}, () => this.filterContent())}}
+                populationChanged={(population) => { this.setState({population}, () => this.filterContent())}}
+                accesChanged={(acces) => { this.setState({acces}, () => this.filterContent())}}
+              />
             </Grid>
           </Grid>
         </div>
