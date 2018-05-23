@@ -356,7 +356,7 @@ class HomePage extends Component {
           <Grid container>
             <Grid item lg={2} xs={false} />
             <Grid item lg={8} xs={12}>
-              <CardsList ref={this.list} connected={this.state.connected} />
+              <CardsList ref={this.list} connected={this.state.connected} show={this.state.madeFirstRequest}/>
             </Grid>
           </Grid>
         </div>

@@ -73,9 +73,9 @@ class CardsList extends Component {
                         <b>Nous n'avons plus de références à vous afficher!</b>
                     </p>
                 }>
-                {this.state.itemsToShow.map((entry) =>
-                    <CardEntry key={entry.id} entry={entry} connected={this.props.connected}/>
-                )}
+                {this.props.show ? this.state.itemsToShow.map((entry, index) =>
+                    <CardEntry grey={index % 2 == 0} key={entry.id} entry={entry} connected={this.props.connected}/>
+                ) : null }
             </InfiniteScroll>
         );
     }
