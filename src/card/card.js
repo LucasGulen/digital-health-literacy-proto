@@ -39,7 +39,6 @@ class CardEntry extends Component {
     }
 
     render() {
-        console.log(this.props.grey);
         const color = this.props.grey ? '#d8e5ff' : '#f7f7f7';
         return (
             <Card style={{ backgroundColor: color, marginTop: 10 }} className={'card-shadow'}>
