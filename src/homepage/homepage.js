@@ -13,13 +13,10 @@ import Button from '@material-ui/core/Button';
 import FilterList from '@material-ui/icons/FilterList';
 import Add from '@material-ui/icons/Add';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import TextField from '@material-ui/core/TextField';
 
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import ModalAuthentification from "../modal/modalAuthentification.js";
+import ModalCreateAccount from "../modal/modalCreateAccount.js";
+
 import Snackbar from "@material-ui/core/Snackbar";
 
 import SearchComponent from "./../search/search";
@@ -42,8 +39,6 @@ const langues = new Set();
 const populations = new Set();
 const baseUrlCowaboo = "http://groups.cowaboo.net/2018/group08/public/api";
 const urlGetUserCowaboo = "/user?secretKey=";
-const urlPostUserCowaboo = "/user?email=";
-const regEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
 class HomePage extends Component {
   constructor(props) {
@@ -55,38 +50,30 @@ class HomePage extends Component {
     // binds
     this.handleChangeRequest = this.handleChangeRequest.bind(this);
     this.handleMakeRequest = this.handleMakeRequest.bind(this);
-
-    this.handleCloseCreateAccount = this.handleCloseCreateAccount.bind(this);
-    this.handleCloseAuthentification = this.handleCloseAuthentification.bind(this);
-    this.renderModalAuthentification = this.renderModalAuthentification.bind(this);
-    this.handleCreateAccount = this.handleCreateAccount.bind(this);
-    this.renderModalCreateAccount = this.renderModalCreateAccount.bind(this);
     this.handleCloseNotif = this.handleCloseNotif.bind(this);
 
     // state
     this.state = {
-      request: '',
+      request: "",
       madeFirstRequest: false,
       hasFetchedData: false,
       searchOpen: false,
-      acces: 'Tous',
-      langue: 'Toutes',
-      population: 'Toutes',
+      acces: "Tous",
+      langue: "Toutes",
+      population: "Toutes",
       modalOpen: false,
       modalCreateAccount: false,
-      email: "",
-      emailCorrect: true,
-      emailDoesntExist: true,
       notif: false,
       notifConnected: false,
       connected: false,
-      accountCreated: false,
       user: {}
     };
 
     // refs
     this.list = React.createRef();
     this.search = React.createRef();
+    this.modalAuthentification = React.createRef();
+    this.modalCreateAccount = React.createRef();
   }
 
   //data
@@ -117,12 +104,12 @@ class HomePage extends Component {
                 parsedEntry.date.substring(0, parsedEntry.date.length - 2),
                 parsedEntry.langue,
                 parsedEntry.population,
-                parsedEntry.verifie,
+                parsedEntry.verifie
               )
             );
-          } catch (error) { }
+          } catch (error) {}
         }
-        populations.delete('na');
+        populations.delete("na");
         if (this.state.madeFirstRequest) {
           this.filterContent();
         } else {
@@ -139,30 +126,6 @@ class HomePage extends Component {
     });
   }
 
-  handleCloseCreateAccount() {
-    this.setState({ modalCreateAccount: false });
-  }
-
-  handleCreateAccount() {
-    if (regEmail.test(this.state.email)) {
-      this.setState({ emailCorrect: true });
-      axios
-        .post(baseUrlCowaboo + urlPostUserCowaboo + this.state.email)
-        .then(response => {
-          this.setState({ accountCreated: true });
-        })
-        .catch(e => {
-          this.setState({ emailDoesntExist: !e.response.status === 409 });
-        });
-    } else {
-      this.setState({ emailCorrect: false, emailDoesntExist: true });
-    }
-  }
-
-  handleCloseAuthentification() {
-    this.setState({ modalOpen: false });
-  }
-
   connectToCowaboo(privateKey) {
     axios
       .get(baseUrlCowaboo + urlGetUserCowaboo + privateKey)
@@ -175,7 +138,7 @@ class HomePage extends Component {
         });
       })
       .catch(e => {
-        this.setState({ modalOpen: !this.state.modalOpen });
+        this.modalAuthentification.current.toogleModal();
       });
   }
 
@@ -215,105 +178,30 @@ class HomePage extends Component {
 
   renderModalCreateAccount() {
     return (
-      <Dialog
+      <ModalCreateAccount
         open={this.state.modalCreateAccount}
-        onClose={this.handleCloseCreateAccount}
-        aria-labelledby="form-dialog-title"
-        disableEnforceFocus
-      >
-        <DialogTitle id="form-dialog-title">Inscription</DialogTitle>
-        {!this.state.accountCreated && (
-          <DialogContent>
-            <DialogContentText>
-              Merci de bien vouloir nous fournir votre adresse mail pour que
-              nous puissions vous envoyer votre clé secrète.
-            </DialogContentText>
-            <TextField
-              margin="dense"
-              label="Email Address"
-              type="email"
-              onKeyUp={event => {
-                if (event.keyCode === 13) {
-                  this.state.accountCreated
-                    ? this.handleCloseCreateAccount()
-                    : this.handleCreateAccount();
-                }
-              }}
-              onChange={e => {
-                this.setState({ email: e.target.value });
-              }}
-              fullWidth
-            />
-            {!this.state.emailCorrect && (
-              <DialogContentText
-                style={{ color: "red", fontSize: 12, fontStyle: "italic" }}
-              >
-                Email incorrect, merci de respecter le type de format suivant :
-                exemple@exemple.com
-              </DialogContentText>
-            )}
-            {!this.state.emailDoesntExist && (
-              <DialogContentText
-                style={{ color: "red", fontSize: 12, fontStyle: "italic" }}
-              >
-                Email déjà existant, merci d'en rentrer un autre.
-              </DialogContentText>
-            )}
-          </DialogContent>
-        )}
-        {this.state.accountCreated && (
-          <DialogContent>
-            <DialogContentText>
-              Nous vous remercions pour votre inscription. Un mail avec votre
-              clé secrète va vous être envoyé.
-            </DialogContentText>
-          </DialogContent>
-        )}
-        <DialogActions>
-          {!this.state.accountCreated && (
-            <Button onClick={this.handleCloseCreateAccount} color="primary">
-              Annuler
-            </Button>
-          )}
-          <Button
-            onClick={
-              this.state.accountCreated
-                ? this.handleCloseCreateAccount
-                : this.handleCreateAccount
-            }
-            color="primary"
-          >
-            Valider
-          </Button>
-        </DialogActions>
-      </Dialog>
+        ref={this.modalCreateAccount}
+        title={"Inscription"}
+        contentText={
+          "Merci de bien vouloir nous fournir votre adresse mail pour que nous puissions vous envoyer votre clé secrète."
+        }
+        buttonCancelText={"Annuler"}
+        buttonValidate={"Valider"}
+      />
     );
   }
 
   renderModalAuthentification() {
     return (
-      <Dialog
+      <ModalAuthentification
         open={this.state.modalOpen}
-        onClose={this.handleCloseAuthentification}
-        aria-labelledby="responsive-dialog-title"
-        disableEnforceFocus
-      >
-        <DialogTitle id="responsive-dialog-title">
-          {"Erreur d'authentification"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Nous n'avons malheureusement pas réussi à vous identifier. Veuillez
-            réessayer d'entrer votre clé privée ou de vous créer un compte si
-            vous n'en avez pas encore un.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleCloseAuthentification} color="primary">
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog>
+        ref={this.modalAuthentification}
+        title={"Erreur d'authentification"}
+        contentText={
+          "Nous n'avons malheureusement pas réussi à vous identifier. Veuillez réessayer d'entrer votre clé privée ou de vous créer un compte si vous n'en avez pas encore un."
+        }
+        buttonName={"Ok"}
+      />
     );
   }
 
@@ -355,11 +243,7 @@ class HomePage extends Component {
             });
           }}
           creatingAccount={_ => {
-            this.setState({
-              emailCorrect: true,
-              emailDoesntExist: true,
-              modalCreateAccount: !this.state.modalCreateAccount
-            });
+            this.modalCreateAccount.current.openModal();
           }}
           connected={this.state.connected}
         />
@@ -385,7 +269,7 @@ class HomePage extends Component {
                   <FilterList />
                 </Button>
               </span>
-              <FormControl style={{ width: "80%" }}>
+              <FormControl style={{ width: "79%" }}>
                 <InputLabel htmlFor="adornment-recherche">
                   Votre recherche
               </InputLabel>
@@ -430,17 +314,24 @@ class HomePage extends Component {
         {this.renderNotif()}
         {this.renderModalAuthentification()}
         {this.renderModalCreateAccount()}
-
-        <div >
-          <Grid container >
+        <div>
+          <Grid container>
             <Grid item lg={2} xs={false} />
             <Grid item lg={8} xs={12}>
               <SearchComponent
-                searchopen={this.state.searchOpen ? "search-show" : "search-hide"}
+                searchopen={
+                  this.state.searchOpen ? "search-show" : "search-hide"
+                }
                 ref={this.search}
-                langueChanged={(langue) => { this.setState({ langue }, () => this.filterContent()) }}
-                populationChanged={(population) => { this.setState({ population }, () => this.filterContent()) }}
-                accesChanged={(acces) => { this.setState({ acces }, () => this.filterContent()) }}
+                langueChanged={langue => {
+                  this.setState({ langue }, () => this.filterContent());
+                }}
+                populationChanged={population => {
+                  this.setState({ population }, () => this.filterContent());
+                }}
+                accesChanged={acces => {
+                  this.setState({ acces }, () => this.filterContent());
+                }}
               />
             </Grid>
           </Grid>
