@@ -181,7 +181,7 @@ class HomePage extends Component {
 
   refresh(){
     console.log('refresh');
-    this.forceUpdate();
+    document.body.style.overflowY = 'auto';            
   }
 
   renderModalCreateAccount() {
@@ -236,7 +236,6 @@ class HomePage extends Component {
 
   // render
   render() {
-    document.body.style.overflow = 'visible';            
     return (
       <div>
         <AppTopBar style={{ position: 'fixed' }}

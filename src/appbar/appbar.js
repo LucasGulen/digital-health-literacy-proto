@@ -113,6 +113,7 @@ class AppTopBar extends Component {
   }
 
   render() {
+    document.body.style.overflow = 'visible';                
     return (
       <AppBar position="fixed">
         <Toolbar>
