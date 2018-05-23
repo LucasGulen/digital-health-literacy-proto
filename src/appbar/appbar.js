@@ -16,10 +16,11 @@ import "./appbar.css";
 class AppTopBar extends Component {
   state = {
     anchorElement: null,
-    privateKey: "",
+    privateKey: ""
   };
 
   handleCreatedAccount = _ => {
+    this.handleClose();
     this.props.creatingAccount();
   };
 
@@ -29,7 +30,6 @@ class AppTopBar extends Component {
 
   handleConnectedEvent = _ => {
     this.props.connecting(this.state.privateKey);
-    this.handleClose();
   };
 
   handleKeyPress = event => {

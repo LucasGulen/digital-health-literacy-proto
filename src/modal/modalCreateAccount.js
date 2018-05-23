@@ -38,9 +38,13 @@ class ModalCreateAccount extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
     this.handleCreateAccount = this.handleCreateAccount.bind(this);
-  }
+
+
+    //refs
+}
 
   closeModal() {
+    this.props.refresh();    
     this.setState({ open: false, msgEmailIncorrect: false });
   }
 
@@ -86,6 +90,7 @@ class ModalCreateAccount extends Component {
               margin="dense"
               label="Email Address"
               type="email"
+              autoFocus
               onKeyUp={e => {
                 this.setState({
                   email: e.target.value,

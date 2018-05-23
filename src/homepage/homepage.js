@@ -166,6 +166,11 @@ class HomePage extends Component {
     this.list.current.newData(filteredEntries);
   }
 
+  refresh(){
+    console.log('refresh');
+    this.forceUpdate();
+  }
+
   renderModalCreateAccount() {
     return (
       <ModalCreateAccount
@@ -177,6 +182,7 @@ class HomePage extends Component {
         }
         buttonCancelText={"Annuler"}
         buttonValidate={"Valider"}
+        refresh={() =>{this.refresh()}}
       />
     );
   }
@@ -217,6 +223,7 @@ class HomePage extends Component {
 
   // render
   render() {
+    document.body.style.overflow = 'visible';            
     return (
       <div>
         <AppTopBar
