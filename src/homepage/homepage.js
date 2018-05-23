@@ -12,7 +12,6 @@ import Search from "@material-ui/icons/Search";
 import Button from "@material-ui/core/Button";
 import FilterList from "@material-ui/icons/FilterList";
 import Add from "@material-ui/icons/Add";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import ModalAuthentification from "../modal/modalAuthentification.js";
@@ -20,6 +19,7 @@ import ModalCreateAccount from "../modal/modalCreateAccount.js";
 
 import Snackbar from "@material-ui/core/Snackbar";
 
+import AjoutModifEntry from "../ajoutModifEntry/ajoutModifEntry";
 import SearchComponent from "./../search/search";
 // HTTP
 import axios from "axios";
@@ -252,6 +252,8 @@ class HomePage extends Component {
           connected={this.state.connected}
         />
 
+        <AjoutModifEntry/>
+
         <Grid container className="flex-column-center">
           <Grid item style={{ paddingTop: 65 }}>
             <img
@@ -373,7 +375,6 @@ class HomePage extends Component {
               }}
             >
               <span hidden={!this.state.madeFirstRequest} className={"arrow"} />
-
             </Button>
           </Tooltip>
         </span>
