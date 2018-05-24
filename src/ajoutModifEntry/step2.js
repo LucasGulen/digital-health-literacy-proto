@@ -52,12 +52,24 @@ class Step2 extends Component {
     )
     .then(response => {
         const tag = Object.keys(response.data.dictionary.entries).length;
-        console.log(tag);
-        const value = "{\"date\":\""+this.state.date+"\",\"themes\":[\""+this.props.getStore().theme+"\"],\"entryNo\":"+tag+",\"siteWeb\":\""+encodeURIComponent(this.props.getStore().siteWeb) +"\",\"pathologie\":\""+ this.props.getStore().pathologie +"\",\"typeReference\":\""+ this.props.getStore().typeReference +" \",\"acces\":\""+ this.state.acces +"\",\"langue\":\""+ this.state.langue +"\",\"societe\":\""+ this.props.getStore().societe +"\",\"lienRessource\":\""+ encodeURIComponent(this.props.getStore().lien) +"\",\"population\":\""+ this.state.population +"\",\"verifie\":\"false\"}"        
-        console.log(JSON.stringify(value));
+        let entry = {};
+        entry.date = this.state.date;
+        entry.themes = this.props.getStore().theme;
+        entry.entryNo = tag;
+        entry.siteWeb = encodeURIComponent(this.props.getStore().siteWeb);
+        entry.pathologie = this.props.getStore().pathologie;
+        entry.typeReference = this.props.getStore().typeReference;
+        entry.acces = this.state.acces;
+        entry.langue = this.state.langue;
+        entry.societe = this.props.getStore().societe;
+        entry.lienRessource = encodeURIComponent(this.props.getStore().lien);
+        entry.population = this.state.population;
+        entry.verifie = false;
         const secret = "SD6OWJLTF2U2CYVALP2ZENKXWVBVRSJSX36SKPWIY3RDALYDTMZJSHSN";
+
         axios
-        .post("http://groups.cowaboo.net/2018/group08/public/api/entry?secretKey="+secret+"&observatoryId=test&tags="+tag+"&value=")
+        .post("http://groups.cowaboo.net/2018/group08/public/api/entry?secretKey="+secret
+        +"&observatoryId=test&tags="+tag+"&value=" + JSON.stringify(entry))
         .then(response => {
           console.log("entry posted");
         })
