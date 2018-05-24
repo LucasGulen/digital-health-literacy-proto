@@ -67,7 +67,8 @@ class HomePage extends Component {
       notifConnected: false,
       connected: false,
       user: {},
-      tooltipMessage: "Veuillez vous connecter afin proposer du contenu"
+      showScrollUp: false,
+      tooltipMessage: "Veuillez vous connecter afin proposer du contenu",
     };
 
     // refs
@@ -75,6 +76,23 @@ class HomePage extends Component {
     this.search = React.createRef();
     this.modalAuthentification = React.createRef();
     this.modalCreateAccount = React.createRef();
+    this.ajoutModifEntry = React.createRef();
+
+    window.addEventListener("scroll", () => {
+      let scrollTop =
+        window.pageYOffset !== undefined
+          ? window.pageYOffset
+          : (
+              document.documentElement ||
+              document.body.parentNode ||
+              document.body
+            ).scrollTop;
+      if (scrollTop >= 200 && !this.state.showScrollUp) {
+        this.setState({ showScrollUp: true });
+      } else if (scrollTop < 200 && this.state.showScrollUp) {
+        this.setState({ showScrollUp: false });
+      }
+    });
   }
 
   //data
@@ -252,7 +270,7 @@ class HomePage extends Component {
           connected={this.state.connected}
         />
 
-        <AjoutModifEntry/>
+        <AjoutModifEntry ref={this.ajoutModifEntry} />
 
         <Grid container className="flex-column-center">
           <Grid item style={{ paddingTop: 65 }}>
@@ -364,18 +382,29 @@ class HomePage extends Component {
             </Grid>
           </Grid>
         </div>
-        <span style={{ position: "fixed", right: "6%", bottom: "16%" }}>
-          <Tooltip placement="left" title={"Remonter"}>
-            <Button
-              variant="fab"
-              color="default"
-              aria-label="add"
-              onClick={() => {
-                animateScroll.scrollToTop();
-              }}
-            >
-              <span hidden={!this.state.madeFirstRequest} className={"arrow"} />
-            </Button>
+        <span
+          className={this.state.showScrollUp ? "show" : "hidden"}
+          style={{ position: "fixed", right: "6%", bottom: "16%" }}
+        >
+          <Tooltip
+            disableHoverListener={!this.state.showScrollUp}
+            open={this.state.showScrollUp ? true : undefined}
+            placement="left"
+            title={this.state.showScrollUp ? "Remonter" : ""}
+          >
+            <span>
+              <Button
+                variant="fab"
+                color="default"
+                aria-label="add"
+                disabled={!this.state.showScrollUp}
+                onClick={() => {
+                  animateScroll.scrollToTop();
+                }}
+              >
+                <span className={"arrow"} />
+              </Button>
+            </span>
           </Tooltip>
         </span>
 
@@ -387,7 +416,7 @@ class HomePage extends Component {
                 color="primary"
                 aria-label="add"
                 onClick={() => {
-                  animateScroll.scrollToTop();
+                  this.ajoutModifEntry.current.openModal();
                 }}
                 disabled={!this.state.connected}
               >

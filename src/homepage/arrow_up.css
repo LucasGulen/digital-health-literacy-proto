@@ -1,6 +1,6 @@
 .arrow {
   position: absolute;
-  top: 50%;
+  top: 51%;
   left: 50%;
   margin-top: -30px;
   margin-left: -60px;
@@ -8,17 +8,15 @@
   font-size: 26px;
   color: #303f9f;
   text-align: center;
-  width: 60px;
-  height: 50px;
+  height: 48px;
   line-height: 60px;
   border: 5px solid #303f9f;
-  margin-left: -30px;
   border-radius: 40px;
   overflow: hidden;
   text-transform: uppercase;
   cursor: pointer;
-  width: 50px;
-  margin-left: -30px;
+  width: 48px;
+  margin-left: -28px;
   border-radius: 40px;
   color: rgba(48, 63, 159, 0);
   transition: width 0.5s ease-in-out, margin 0.5s ease-in-out, border-radius 1s 0.25 ease-in-out, color 0.25s ease-in-out 0.25s;
