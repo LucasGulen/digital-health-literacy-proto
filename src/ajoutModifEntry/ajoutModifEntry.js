@@ -22,8 +22,10 @@ class AjoutModifEntry extends Component {
       typeReference: "",
       lien: "",
       date: "",
-      acces: ""
+      acces: "",
+      nbEntries: 0
     };
+
   }
 
   getStore() {
@@ -77,6 +79,7 @@ class AjoutModifEntry extends Component {
               steps={steps}
               showNavigation={false}
               hocValidationAppliedTo={[1, 2]}
+              startAtStep={1}
             />
           </div>
         </div>
