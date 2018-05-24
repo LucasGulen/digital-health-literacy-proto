@@ -7,10 +7,10 @@ class Step1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pathologie: "",
-      societe: "",
-      siteWeb: "",
-      theme: ""
+      pathologie: this.props.getStore().pathologie,
+      societe: this.props.getStore().societe,
+      siteWeb: this.props.getStore().siteWeb,
+      theme: this.props.getStore().theme
     };
 
     this.isValidated = this.isValidated.bind(this);
@@ -26,6 +26,11 @@ class Step1 extends Component {
   }
 
   render() {
+    document.onkeypress = e => {
+      if (e.keyCode === 13 &&  this.isValidated()) {
+        this.props.jumpToStep(1);
+      }
+    };
     return (
       <div
         style={{
@@ -41,33 +46,45 @@ class Step1 extends Component {
           margin="dense"
           label="Pathologie"
           type="text"
+          name="pathologie"
           onChange={e => {
             this.setState({ pathologie: e.target.value });
+            this.props.updateStore(e.target.name, e.target.value);
           }}
+          defaultValue={this.props.getStore().pathologie}
         />
         <TextField
           margin="dense"
           label="Société / Organisation / Association"
           type="text"
+          name="societe"
           onChange={e => {
             this.setState({ societe: e.target.value });
+            this.props.updateStore(e.target.name, e.target.value);
           }}
+          defaultValue={this.props.getStore().societe}
         />
         <TextField
           margin="dense"
           label="Site Web"
           type="text"
+          name="siteWeb"
           onChange={e => {
             this.setState({ siteWeb: e.target.value });
+            this.props.updateStore(e.target.name, e.target.value);
           }}
+          defaultValue={this.props.getStore().siteWeb}
         />
         <TextField
           margin="dense"
           label="Thème"
           type="text"
+          name="theme"
           onChange={e => {
             this.setState({ theme: e.target.value });
+            this.props.updateStore(e.target.name, e.target.value);
           }}
+          defaultValue={this.props.getStore().theme}
         />
         <div
           style={{
