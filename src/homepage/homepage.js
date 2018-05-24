@@ -69,7 +69,7 @@ class HomePage extends Component {
       user: {},
       showScrollUp: false,
       tooltipMessage: "Veuillez vous connecter afin proposer du contenu",
-      isFetchingLogin: false
+      isFetchingLogin: false,
     };
 
     // refs
@@ -275,7 +275,7 @@ class HomePage extends Component {
           isFetching={this.state.isFetchingLogin}
         />
 
-        <AjoutModifEntry ref={this.ajoutModifEntry} />
+        <AjoutModifEntry ref={this.ajoutModifEntry} nbEntries={this.state.nbEntries} />
 
         <Grid container className="flex-column-center">
           <Grid item style={{ paddingTop: 65 }}>
