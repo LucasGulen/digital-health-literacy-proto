@@ -3,7 +3,17 @@
     cursor: pointer;
 }
 
+.vote-icon-green {
+    color: green;
+    cursor: pointer;
+}
+
 .clickable-icon-red:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.vote-icon-red {
     color: red;
     cursor: pointer;
 }

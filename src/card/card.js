@@ -87,12 +87,22 @@ class CardEntry extends Component {
                             </div>
                             <div>
                                 <Tooltip placement="bottom" title={this.props.connected ? 'Vote positif' : 'Veuillez vous connecter pour voter'}>
-                                    <ThumbUp className={'clickable-icon-green'} onClick={() => {
-                                        console.log("Thumbs up");
-                                    }}/>
+                                    <ThumbUp className={this.props.entry.vote == 1 ? 'vote-icon-green' : 'clickable-icon-green'} onClick={() => {
+                                        if(!this.props.connected) return;
+                                        this.props.entry.vote = (this.props.entry.vote == 1 ? 0 : 1);
+                                        this.forceUpdate();
+                                    }} />
                                 </Tooltip>
                                 <Tooltip placement="bottom" title={this.props.connected ? 'Vote négatif' : 'Veuillez vous connecter pour voter'}>
-                                    <ThumbDown style={{ marginLeft: 10 }} className={'clickable-icon-red'} />
+                                    <ThumbDown
+                                        style={{ marginLeft: 10 }}
+                                        className={this.props.entry.vote == 2 ? 'vote-icon-red' : 'clickable-icon-red'}
+                                        onClick={() => {
+                                            if(!this.props.connected) return;
+                                            this.props.entry.vote = (this.props.entry.vote == 2 ? 0 : 2);
+                                            this.forceUpdate();
+                                        }}
+                                    />
                                 </Tooltip>
                             </div>
                         </Grid>

@@ -70,7 +70,7 @@ class AjoutModifEntry extends Component {
       }
     ];
     return (
-      <Dialog open={true /*this.state.modalOpen*/} fullWidth maxWidth={"sm"}>
+      <Dialog open={this.state.modalOpen} fullWidth maxWidth={"sm"}>
         <div style={{ justifyContent: "center" }}>
           <div className={"step-progress"} style={{ justifyContent: "center" }}>
             <StepZilla

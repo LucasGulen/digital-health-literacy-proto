@@ -124,7 +124,8 @@ class HomePage extends Component {
                 parsedEntry.date.substring(0, parsedEntry.date.length - 2),
                 parsedEntry.langue,
                 parsedEntry.population,
-                parsedEntry.verifie
+                parsedEntry.verifie,
+                0
               )
             );
           } catch (error) {}
@@ -158,7 +159,10 @@ class HomePage extends Component {
           notif: true,
           tooltipMessage: "Proposer du contenu",
           isFetchingLogin: false
+        }, () => {
+          
         });
+        console.log(response.data);
       })
       .catch(e => {
         this.setState({ isFetchingLogin: false });
