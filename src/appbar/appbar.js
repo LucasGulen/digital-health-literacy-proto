@@ -9,15 +9,17 @@ import Grid from "material-ui/Grid";
 import Typography from "material-ui/Typography";
 import TextField from "material-ui/TextField";
 import Menu, { MenuItem } from "material-ui/Menu";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 // Styles
 import "./appbar.css";
 
 class AppTopBar extends Component {
-  state = {
-    anchorElement: null,
-    privateKey: ""
-  };
+    state = {
+      anchorElement: null,
+      privateKey: "",
+    };
+
 
   handleCreatedAccount = _ => {
     this.handleClose();
@@ -25,9 +27,14 @@ class AppTopBar extends Component {
   };
 
   handleDisconnected = _ => {
-    this.setState({
-      privateKey: ""
-    }, () => { this.props.disconnecting() });
+    this.setState(
+      {
+        privateKey: ""
+      },
+      () => {
+        this.props.disconnecting();
+      }
+    );
   };
 
   handleConnectedEvent = _ => {
@@ -86,8 +93,12 @@ class AppTopBar extends Component {
               <MenuItem
                 style={{ justifyContent: "center", marginTop: 20 }}
                 onClick={this.handleConnectedEvent}
+                disabled={this.props.isFetching}
               >
-                Login
+                {(this.props.isFetching && (
+                  <CircularProgress style={{ alignSelf: "" }} size={20} />
+                )) ||
+                  "Login"}
               </MenuItem>
               <MenuItem
                 style={{ color: "blue", fontSize: 12 }}
@@ -112,8 +123,8 @@ class AppTopBar extends Component {
     }
   }
 
-  render() { 
-    document.body.style.overflow = 'visible';                
+  render() {
+    document.body.style.overflow = "visible";
     return (
       <AppBar position="fixed">
         <Toolbar>

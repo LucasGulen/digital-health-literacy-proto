@@ -69,6 +69,7 @@ class HomePage extends Component {
       user: {},
       showScrollUp: false,
       tooltipMessage: "Veuillez vous connecter afin proposer du contenu",
+      isFetchingLogin: false
     };
 
     // refs
@@ -146,6 +147,7 @@ class HomePage extends Component {
   }
 
   connectToCowaboo(privateKey) {
+    this.setState({ isFetchingLogin: true });
     axios
       .get(baseUrlCowaboo + urlGetUserCowaboo + privateKey)
       .then(response => {
@@ -154,10 +156,12 @@ class HomePage extends Component {
           user: response.data,
           notifConnected: true,
           notif: true,
-          tooltipMessage: "Proposer du contenu"
+          tooltipMessage: "Proposer du contenu",
+          isFetchingLogin: false
         });
       })
       .catch(e => {
+        this.setState({ isFetchingLogin: false });
         this.modalAuthentification.current.toogleModal();
       });
   }
@@ -268,6 +272,7 @@ class HomePage extends Component {
             this.modalCreateAccount.current.openModal();
           }}
           connected={this.state.connected}
+          isFetching={this.state.isFetchingLogin}
         />
 
         <AjoutModifEntry ref={this.ajoutModifEntry} />
